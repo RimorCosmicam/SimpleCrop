@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:;">
+  <title>SimpleCrop</title>
+  <link rel="stylesheet" href="styles/liquid-glass.css">
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body>
+  <div class="app">
+    <!-- Title Bar -->
+    <div class="title-bar">
+      <h1>SimpleCrop</h1>
+      <div class="title-bar-controls">
+        <label class="glass-toggle" title="Toggle opaque background">
+          <input type="checkbox" id="toggle-opaque">
+          <span class="toggle-slider"></span>
+          <span class="toggle-label">Opaque</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <!-- Tools -->
+        <div class="glass-panel animate-slide-up">
+          <div class="tool-group">
+            <span class="tool-group-title">Tools</span>
+            <button class="tool-btn" data-tool="crop" title="Crop">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 2v14a2 2 0 0 0 2 2h14M2 6h14a2 2 0 0 1 2 2v14" />
+              </svg>
+              Crop
+            </button>
+            <button class="tool-btn" data-tool="trim" title="Trim Video">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M8 3v18M16 3v18M3 8h18M3 16h18" />
+              </svg>
+              Trim
+            </button>
+            <button class="tool-btn active" data-tool="adjust" title="Adjustments">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3" />
+                <path
+                  d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+              </svg>
+              Adjust
+            </button>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="glass-panel animate-slide-up" style="animation-delay: 50ms;">
+          <div class="tool-group">
+            <span class="tool-group-title">Actions</span>
+            <button class="tool-btn" id="btn-import">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" />
+              </svg>
+              Import
+            </button>
+            <button class="tool-btn" id="btn-export">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+              </svg>
+              Export
+            </button>
+            <button class="tool-btn" id="btn-reset">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                <path d="M3 3v5h5" />
+              </svg>
+              Reset
+            </button>
+          </div>
+        </div>
+
+        <!-- Settings -->
+        <div class="glass-panel animate-slide-up" style="animation-delay: 100ms;">
+          <div class="tool-group">
+            <span class="tool-group-title">Settings</span>
+            <button class="tool-btn" id="btn-glass-settings">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M12 3v1M12 20v1M4.22 4.22l.71.71M18.36 18.36l.71.71M1 12h1M22 12h1M4.22 19.78l.71-.71M18.36 5.64l.71-.71" />
+                <path d="M12 8l1.5 3.5 3.5 1.5-3.5 1.5-1.5 3.5-1.5-3.5-3.5-1.5 3.5-1.5z" />
+              </svg>
+              Glass
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Canvas Area -->
+      <main class="canvas-container">
+        <div class="preview-area glass-panel animate-fade-in">
+          <!-- Empty State -->
+          <div class="empty-state" id="empty-state">
+            <div class="empty-state-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5-7l-3 3.72L9 13l-3 4h12l-4-5z" />
+              </svg>
+            </div>
+            <h2>No Media Loaded</h2>
+            <p>Import an image or video to get started with editing</p>
+            <button class="glass-btn primary" id="btn-import-empty">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" />
+              </svg>
+              Import Media
+            </button>
+          </div>
+
+          <!-- Preview Container -->
+          <div class="preview-wrapper" id="preview-wrapper" style="display: none;">
+            <canvas id="preview-canvas"></canvas>
+            <video id="preview-video" loop></video>
+
+            <!-- Crop Overlay -->
+            <div class="crop-overlay" id="crop-overlay">
+              <div class="crop-box" id="crop-box">
+                <div class="crop-grid">
+                  <div class="crop-grid-line horizontal"></div>
+                  <div class="crop-grid-line horizontal"></div>
+                  <div class="crop-grid-line vertical"></div>
+                  <div class="crop-grid-line vertical"></div>
+                </div>
+                <div class="crop-handle nw" data-handle="nw"></div>
+                <div class="crop-handle n" data-handle="n"></div>
+                <div class="crop-handle ne" data-handle="ne"></div>
+                <div class="crop-handle e" data-handle="e"></div>
+                <div class="crop-handle se" data-handle="se"></div>
+                <div class="crop-handle s" data-handle="s"></div>
+                <div class="crop-handle sw" data-handle="sw"></div>
+                <div class="crop-handle w" data-handle="w"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Timeline (for video) -->
+        <div class="timeline-container" id="timeline-container">
+          <div class="glass-panel">
+            <div class="timeline-header">
+              <div class="timeline-controls">
+                <button class="glass-btn icon-only" id="btn-play">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </button>
+                <span class="timeline-time" id="current-time">00:00</span>
+                <span class="timeline-time">/</span>
+                <span class="timeline-time" id="duration">00:00</span>
+              </div>
+              <div class="timeline-controls">
+                <span class="timeline-time text-secondary">Trim:</span>
+                <span class="timeline-time" id="trim-start">00:00</span>
+                <span class="timeline-time">-</span>
+                <span class="timeline-time" id="trim-end">00:00</span>
+              </div>
+            </div>
+            <div class="timeline-track" id="timeline-track">
+              <div class="timeline-thumbnails" id="timeline-thumbnails"></div>
+              <div class="timeline-progress" id="timeline-progress"></div>
+              <div class="timeline-selection" id="timeline-selection"></div>
+              <div class="timeline-marker start" id="marker-start"></div>
+              <div class="timeline-marker end" id="marker-end"></div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Adjustments Panel -->
+      <aside class="adjustments-panel" id="adjustments-panel">
+        <!-- Glass Settings -->
+        <div class="glass-panel animate-slide-up" id="glass-settings" style="display: none;">
+          <div class="adjustment-section">
+            <div class="sidebar-header" style="border: none; padding-left: 0; padding-top: 0;">
+              <h3 class="sidebar-title" style="margin: 0;">Glass Settings</h3>
+            </div>
+          </div>
+
+          <div class="sidebar-tabs" style="padding: 0 0 var(--space-md) 0;">
+            <div class="modal-tabs">
+              <button class="tab-btn active" data-tab="bg">Background</button>
+              <button class="tab-btn" data-tab="ui">UI Panels</button>
+            </div>
+          </div>
+
+          <div class="sidebar-scroll-content" style="padding: 0; max-height: calc(100vh - 250px);">
+            <!-- Background Tab -->
+            <div class="tab-content active" id="tab-bg">
+              <div class="adjustment-section">
+                <div class="adjustment-control">
+                  <div class="adjustment-section-header collapsible-toggle" data-target="glass-variant-container">
+                    <span class="adjustment-label">Variant (0-19)</span>
+                    <div class="header-actions">
+                      <span class="adjustment-value" id="glass-variant-value">11</span>
+                      <svg class="chevron-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div id="glass-variant-container" class="collapsible-content">
+                    <div class="variant-grid" id="glass-variant-grid">
+                      <!-- Buttons generated via JS -->
+                    </div>
+                  </div>
+                </div>
+
+                <div class="adjustment-control">
+                  <div class="adjustment-header">
+                    <span class="adjustment-label">Corner Radius</span>
+                    <span class="adjustment-value" id="glass-radius-value">12</span>
+                  </div>
+                  <input type="range" class="glass-slider" id="glass-radius" min="0" max="50" value="12">
+                </div>
+
+                <div class="adjustment-control">
+                  <div class="adjustment-header">
+                    <span class="adjustment-label">Background Opacity</span>
+                    <span class="adjustment-value" id="glass-opacity-value">31</span>
+                  </div>
+                  <input type="range" class="glass-slider" id="glass-opacity" min="0" max="100" value="31">
+                </div>
+
+                <div class="adjustment-control">
+                  <div class="adjustment-header">
+                    <span class="adjustment-label">Background Border</span>
+                    <span class="adjustment-value" id="glass-border-opacity-value">15</span>
+                  </div>
+                  <input type="range" class="glass-slider" id="glass-border-opacity" min="0" max="100" value="15">
+                </div>
+
+                <div class="adjustment-control toggle-row">
+                  <span class="adjustment-label">Custom Tint</span>
+                  <label class="glass-toggle">
+                    <input type="checkbox" id="glass-tint-custom" checked>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+
+                <div class="adjustment-control" id="glass-tint-section">
+                  <div class="color-input-row">
+                    <input type="color" class="color-picker" id="glass-tint-picker" value="#1a1a1a">
+                    <input type="text" class="glass-input" id="glass-tint" value="#1a1a1a50" placeholder="#RRGGBBAA"
+                      style="flex: 1;">
+                  </div>
+                </div>
+
+                <div class="adjustment-control toggle-row">
+                  <span class="adjustment-label">Scrim</span>
+                  <label class="glass-toggle">
+                    <input type="checkbox" id="glass-scrim">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+
+                <div class="adjustment-control toggle-row">
+                  <span class="adjustment-label">Subdued</span>
+                  <label class="glass-toggle">
+                    <input type="checkbox" id="glass-subdued">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- UI Panels Tab -->
+            <div class="tab-content" id="tab-ui">
+              <div class="adjustment-section">
+                <div class="adjustment-control">
+                  <div class="adjustment-header">
+                    <span class="adjustment-label">Panel Opacity</span>
+                    <span class="adjustment-value" id="glass-panel-opacity-value">25</span>
+                  </div>
+                  <input type="range" class="glass-slider" id="glass-panel-opacity" min="0" max="100" value="25">
+                </div>
+
+                <div class="adjustment-control">
+                  <div class="adjustment-header">
+                    <span class="adjustment-label">Panel Border</span>
+                    <span class="adjustment-value" id="glass-panel-border-value">4</span>
+                  </div>
+                  <input type="range" class="glass-slider" id="glass-panel-border" min="0" max="100" value="4">
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="adjustment-control" id="glass-panel-tint-section" style="display: none;">
+            <div class="color-input-row">
+              <input type="color" class="color-picker" id="glass-panel-tint-picker" value="#ffffff">
+              <input type="text" class="glass-input" id="glass-panel-tint" value="#ffffff10" placeholder="#RRGGBBAA"
+                style="flex: 1;">
+            </div>
+          </div>
+          <div class="divider"></div>
+
+          <div class="sidebar-footer" style="padding: var(--space-md) 0 0 0; border: none;">
+            <div class="button-row">
+              <button class="liquid-btn primary small" id="glass-settings-apply">Save</button>
+              <button class="liquid-btn ghost small" id="glass-settings-reset">Reset</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Crop Settings -->
+        <div class="glass-panel animate-slide-up" id="crop-settings" style="display: none;">
+          <div class="adjustment-section">
+            <span class="adjustment-section-title">Aspect Ratio</span>
+            <div class="aspect-ratio-grid">
+              <button class="aspect-btn active" data-ratio="free">Free</button>
+              <button class="aspect-btn" data-ratio="1:1">1:1</button>
+              <button class="aspect-btn" data-ratio="4:3">4:3</button>
+              <button class="aspect-btn" data-ratio="16:9">16:9</button>
+              <button class="aspect-btn" data-ratio="9:16">9:16</button>
+              <button class="aspect-btn" data-ratio="3:2">3:2</button>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="adjustment-section">
+            <span class="adjustment-section-title">Actions</span>
+            <div style="display: flex; gap: 8px; flex-direction: column;">
+              <button class="glass-btn primary" id="btn-apply-crop" style="width: 100%;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg>
+                Apply Crop
+              </button>
+              <button class="glass-btn" id="btn-clear-crop" style="width: 100%;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+                Clear Crop
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Color Adjustments -->
+        <div class="glass-panel animate-slide-up" id="color-settings" style="display: none;">
+          <div class="adjustment-section">
+            <span class="adjustment-section-title">Light</span>
+
+            <div class="adjustment-control">
+              <div class="adjustment-header">
+                <span class="adjustment-label">Brightness</span>
+                <span class="adjustment-value" id="brightness-value">0</span>
+              </div>
+              <input type="range" class="glass-slider" id="brightness" min="-100" max="100" value="0">
+            </div>
+
+            <div class="adjustment-control">
+              <div class="adjustment-header">
+                <span class="adjustment-label">Exposure</span>
+                <span class="adjustment-value" id="exposure-value">0</span>
+              </div>
+              <input type="range" class="glass-slider" id="exposure" min="-100" max="100" value="0">
+            </div>
+
+            <div class="adjustment-control">
+              <div class="adjustment-header">
+                <span class="adjustment-label">Contrast</span>
+                <span class="adjustment-value" id="contrast-value">0</span>
+              </div>
+              <input type="range" class="glass-slider" id="contrast" min="-100" max="100" value="0">
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="adjustment-section">
+            <span class="adjustment-section-title">Color</span>
+
+            <div class="adjustment-control">
+              <div class="adjustment-header">
+                <span class="adjustment-label">Saturation</span>
+                <span class="adjustment-value" id="saturation-value">0</span>
+              </div>
+              <input type="range" class="glass-slider" id="saturation" min="-100" max="100" value="0">
+            </div>
+
+            <div class="adjustment-control">
+              <div class="adjustment-header">
+                <span class="adjustment-label">Hue</span>
+                <span class="adjustment-value" id="hue-value">0°</span>
+              </div>
+              <input type="range" class="glass-slider" id="hue" min="0" max="360" value="0">
+            </div>
+
+            <div class="adjustment-control">
+              <div class="adjustment-header">
+                <span class="adjustment-label">Temperature</span>
+                <span class="adjustment-value" id="temperature-value">0</span>
+              </div>
+              <input type="range" class="glass-slider" id="temperature" min="-100" max="100" value="0">
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="adjustment-section">
+            <span class="adjustment-section-title">Levels</span>
+
+            <div class="adjustment-control">
+              <div class="adjustment-header">
+                <span class="adjustment-label">Shadows</span>
+                <span class="adjustment-value" id="shadows-value">0</span>
+              </div>
+              <input type="range" class="glass-slider" id="shadows" min="-100" max="100" value="0">
+            </div>
+
+            <div class="adjustment-control">
+              <div class="adjustment-header">
+                <span class="adjustment-label">Highlights</span>
+                <span class="adjustment-value" id="highlights-value">0</span>
+              </div>
+              <input type="range" class="glass-slider" id="highlights" min="-100" max="100" value="0">
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Export Modal -->
+  <div class="modal-overlay" id="export-modal">
+    <div class="modal">
+      <div class="glass-panel">
+        <div class="modal-header">
+          <h2 class="modal-title">Export</h2>
+          <button class="modal-close" id="modal-close">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="adjustment-section">
+            <span class="adjustment-section-title">Format</span>
+            <div class="format-grid" id="format-grid">
+              <!-- Populated by JS based on media type -->
+            </div>
+          </div>
+
+          <div class="export-progress" id="export-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+            <p class="progress-text" id="progress-text">Exporting... 0%</p>
+          </div>
+        </div>
+        <div class="modal-footer" id="modal-footer">
+          <button class="glass-btn" id="btn-cancel-export">Cancel</button>
+          <button class="glass-btn primary" id="btn-confirm-export">Export</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/adjustments.js"></script>
+  <script src="js/cropper.js"></script>
+  <script src="js/trimmer.js"></script>
+  <script src="js/exporter.js"></script>
+  <script src="js/app.js"></script>
+</body>
+
+</html>

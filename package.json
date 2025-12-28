@@ -1,0 +1,61 @@
+{
+  "name": "simplecrop",
+  "productName": "SimpleCrop",
+  "version": "1.0.0",
+  "description": "Simple macOS media editor for cropping, trimming, and color adjustments",
+  "main": "main.js",
+  "author": "SimpleCrop",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --enable-logging",
+    "build": "electron-builder"
+  },
+  "build": {
+    "appId": "com.simplecrop.app",
+    "productName": "SimpleCrop",
+    "mac": {
+      "category": "public.app-category.video",
+      "icon": "Icons/Icon-iOS-Default-1024x1024@1x.png",
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist"
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*",
+      "!dist"
+    ]
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "@ffprobe-installer/ffprobe": "^2.1.2",
+    "electron-liquid-glass": "^1.1.1",
+    "fluent-ffmpeg": "^2.1.2"
+  }
+}
