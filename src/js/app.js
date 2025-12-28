@@ -157,7 +157,8 @@ class App {
                 let r = parseInt(tintColor.slice(1, 3), 16);
                 let g = parseInt(tintColor.slice(3, 5), 16);
                 let b = parseInt(tintColor.slice(5, 7), 16);
-                let a = tintColor.length >= 9 ? parseInt(tintColor.slice(7, 9), 16) / 255 : 0.4;
+                // Use the opacity slider value for the alpha channel
+                let a = settings ? (settings.opacity / 100).toFixed(2) : (tintColor.length >= 9 ? parseInt(tintColor.slice(7, 9), 16) / 255 : 0.4);
                 appEl.style.background = `rgba(${r}, ${g}, ${b}, ${a})`;
             }
 
@@ -317,8 +318,10 @@ class App {
         this.currentTool = tool;
 
         // Update active button
-        document.querySelectorAll('.tool-btn[data-tool]').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.tool === tool);
+        document.querySelectorAll('.tool-btn').forEach(btn => {
+            const isTool = btn.dataset.tool === tool;
+            const isGlass = btn.id === 'btn-glass-settings';
+            btn.classList.toggle('active', isTool);
         });
 
         // Show/hide relevant panels
