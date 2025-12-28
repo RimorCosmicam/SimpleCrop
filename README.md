@@ -2,7 +2,7 @@
 
 SimpleCrop is a minimalist, premium macOS media editor built with the futuristic **MacOS26 "Liquid Glass"** design language. It provides an intuitive, high-performance experience for cropping, trimming, and adjusting your images and videos with a native macOS feel.
 
-![SimpleCrop Interface](./readme.jpeg)
+![SimpleCrop Interface](./Readmev2.jpeg)
 
 ## Features
 
