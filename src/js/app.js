@@ -293,24 +293,40 @@ class App {
         initialInit();
 
         window.api?.onReceivePanelSettings((settings) => {
-            if (settings) {
-                // Update state if needed
-                if (settings.variant !== undefined) currentVariant = settings.variant;
+            if (!settings) return;
 
-                // Sync sliders
-                if (panelOpacitySlider) panelOpacitySlider.value = settings.panelOpacity;
-                if (panelOpacityValue) panelOpacityValue.textContent = settings.panelOpacity;
-                if (panelBorderSlider) panelBorderSlider.value = settings.panelBorderOpacity;
-                if (panelBorderValue) panelBorderValue.textContent = settings.panelBorderOpacity;
-
-                // Sync background sliders if they exist in main process
-                if (opacitySlider && settings.opacity !== undefined) {
-                    opacitySlider.value = settings.opacity;
-                    if (opacityValue) opacityValue.textContent = settings.opacity;
-                }
-
-                applyCSSChanges(settings.useCustomTint, settings.tintColor, settings.cornerRadius, settings);
+            // Sync Variant
+            if (settings.variant !== undefined) {
+                currentVariant = settings.variant;
+                if (variantValue) variantValue.textContent = currentVariant;
+                document.querySelectorAll('.variant-btn').forEach(btn => {
+                    btn.classList.toggle('active', parseInt(btn.textContent) === currentVariant);
+                });
             }
+
+            // Sync All Sliders & Toggles
+            const setVal = (el, val, key) => {
+                if (el && settings[key] !== undefined) {
+                    el.value = settings[key];
+                    if (val) val.textContent = settings[key];
+                }
+            };
+
+            setVal(radiusSlider, radiusValue, 'cornerRadius');
+            setVal(opacitySlider, opacityValue, 'opacity');
+            setVal(borderOpacitySlider, borderOpacityValue, 'borderOpacity');
+            setVal(panelOpacitySlider, panelOpacityValue, 'panelOpacity');
+            setVal(panelBorderSlider, panelBorderValue, 'panelBorderOpacity');
+
+            if (customTintToggle && settings.useCustomTint !== undefined) {
+                customTintToggle.checked = settings.useCustomTint;
+                if (tintSection) tintSection.classList.toggle('disabled', !settings.useCustomTint);
+            }
+            if (tintInput && settings.tintColor) tintInput.value = settings.tintColor;
+            if (scrimToggle && settings.scrim !== undefined) scrimToggle.checked = !!settings.scrim;
+            if (subduedToggle && settings.subdued !== undefined) subduedToggle.checked = !!settings.subdued;
+
+            applyCSSChanges(settings.useCustomTint, settings.tintColor, settings.cornerRadius, settings);
         });
     }
 

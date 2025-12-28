@@ -32,12 +32,14 @@ const SETTINGS_PATH = path.join(app.getPath('userData'), 'glass-settings.json');
 const DEFAULT_SETTINGS = {
   variant: 11,
   cornerRadius: 12,
+  opacity: 31,
+  borderOpacity: 15,
+  useCustomTint: true,
   tintColor: '#1a1a1a50',
-  scrim: 0,
-  subdued: 0,
-  panelBlur: 30,
   panelOpacity: 25,
   panelBorderOpacity: 4,
+  scrim: 0,
+  subdued: 0,
   backgroundBlur: 30
 };
 
@@ -78,13 +80,8 @@ function applyGlassSettings(win, settings) {
       liquidGlass.unstable_setSubdued(glassId, parseInt(settings.subdued || 0));
     }
 
-    // Send panel and background settings to frontend
-    win.webContents.send('glass:panelSettings', {
-      panelBlur: settings.panelBlur || 30,
-      panelOpacity: settings.panelOpacity || 25,
-      panelBorderOpacity: settings.panelBorderOpacity || 4,
-      backgroundBlur: settings.backgroundBlur || 30
-    });
+    // Send all settings to frontend for full synchronization
+    win.webContents.send('glass:panelSettings', settings);
 
     console.log('Glass applied with ID:', glassId, 'Settings:', settings);
   } catch (e) {
