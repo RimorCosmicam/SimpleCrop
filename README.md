@@ -8,7 +8,7 @@ SimpleCrop is a minimalist, premium macOS media editor built with the futuristic
 
 ### 🧊 Liquid Glass Design
 - **Native macOS Visuals**: Built with the `electron-liquid-glass` library for authentic translucency, vibrancy, and frosted effects.
-- **Dynamic Variants**: Choose from 20 different native glass variants for your workspace.
+- **Dynamic Variants**: Choose from 19 different native glass variants for your workspace.
 - **Persistent Settings**: Your glass opacity, border definition, and variants are saved automatically across sessions.
 
 ### 🖼️ Media Editing
@@ -24,7 +24,7 @@ SimpleCrop is a minimalist, premium macOS media editor built with the futuristic
 ## Getting Started
 
 ### Prerequisites
-- macOS (Optimized for macOS 15+)
+- macOS (Optimized for macOS 26+)
 - [Node.js](https://nodejs.org/) (v18 or higher)
 - [FFmpeg](https://ffmpeg.org/) (Handled via internal installers)
 
@@ -50,9 +50,6 @@ npm run build
 ```
 
 ## Authors & Credits
-Created with ❤️ by **Judelawrosa**.
-- **Version**: 1.0.0 (SimpleCrop V1)
-- **Contact**: [jvictordr@gmail.com](mailto:jvictordr@gmail.com)
-
+Created with ❤️ by **me**.
 ---
 *SimpleCrop - Making media editing feel like a native part of your macOS journey.*
