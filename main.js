@@ -2,8 +2,16 @@ const { app, BrowserWindow, ipcMain, dialog, Menu } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const ffmpeg = require('fluent-ffmpeg');
-const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
-const ffprobePath = require('@ffprobe-installer/ffprobe').path;
+let ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+let ffprobePath = require('@ffprobe-installer/ffprobe').path;
+
+// Fix for ASAR: If binaries are in app.asar, use the unpacked versions
+if (ffmpegPath.includes('app.asar')) {
+  ffmpegPath = ffmpegPath.replace('app.asar', 'app.asar.unpacked');
+}
+if (ffprobePath.includes('app.asar')) {
+  ffprobePath = ffprobePath.replace('app.asar', 'app.asar.unpacked');
+}
 
 // Import Liquid Glass
 let liquidGlass;
@@ -323,8 +331,13 @@ ipcMain.handle('file:readAsDataURL', async (event, filePath) => {
 // Get media info using ffprobe
 ipcMain.handle('media:getInfo', async (event, filePath) => {
   return new Promise((resolve, reject) => {
+    console.log('Fetching media info for:', filePath);
+    console.log('Using ffprobe at:', ffprobePath);
+    console.log('Current working directory:', process.cwd());
+
     ffmpeg.ffprobe(filePath, (err, metadata) => {
       if (err) {
+        console.error('FFprobe error:', err);
         reject(err);
       } else {
         const videoStream = metadata.streams.find(s => s.codec_type === 'video');

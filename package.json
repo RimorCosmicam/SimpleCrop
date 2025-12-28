@@ -46,6 +46,10 @@
     "files": [
       "**/*",
       "!dist"
+    ],
+    "asarUnpack": [
+      "**/node_modules/@ffmpeg-installer/darwin-arm64/ffmpeg",
+      "**/node_modules/@ffprobe-installer/darwin-arm64/ffprobe"
     ]
   },
   "devDependencies": {

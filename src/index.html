@@ -431,39 +431,38 @@
           </div>
         </div>
       </aside>
-    </div>
-  </div>
+      <!-- Export Modal -->
+      <div class="modal-overlay" id="export-modal">
+        <div class="modal">
+          <div class="glass-panel">
+            <div class="modal-header">
+              <h2 class="modal-title">Export</h2>
+              <button class="modal-close" id="modal-close">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="adjustment-section">
+                <span class="adjustment-section-title">Format</span>
+                <div class="format-grid" id="format-grid">
+                  <!-- Populated by JS based on media type -->
+                </div>
+              </div>
 
-  <!-- Export Modal -->
-  <div class="modal-overlay" id="export-modal">
-    <div class="modal">
-      <div class="glass-panel">
-        <div class="modal-header">
-          <h2 class="modal-title">Export</h2>
-          <button class="modal-close" id="modal-close">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M18 6L6 18M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="adjustment-section">
-            <span class="adjustment-section-title">Format</span>
-            <div class="format-grid" id="format-grid">
-              <!-- Populated by JS based on media type -->
+              <div class="export-progress" id="export-progress">
+                <div class="progress-bar">
+                  <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                </div>
+                <p class="progress-text" id="progress-text">Exporting... 0%</p>
+              </div>
+            </div>
+            <div class="modal-footer" id="modal-footer">
+              <button class="glass-btn" id="btn-cancel-export">Cancel</button>
+              <button class="glass-btn primary" id="btn-confirm-export">Export</button>
             </div>
           </div>
-
-          <div class="export-progress" id="export-progress">
-            <div class="progress-bar">
-              <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
-            </div>
-            <p class="progress-text" id="progress-text">Exporting... 0%</p>
-          </div>
-        </div>
-        <div class="modal-footer" id="modal-footer">
-          <button class="glass-btn" id="btn-cancel-export">Cancel</button>
-          <button class="glass-btn primary" id="btn-confirm-export">Export</button>
         </div>
       </div>
     </div>

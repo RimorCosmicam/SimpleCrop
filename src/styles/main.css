@@ -192,7 +192,7 @@ body {
     flex: 1;
     display: flex;
     gap: var(--space-md);
-    padding: 0 var(--space-md) var(--space-md);
+    padding: 0 var(--space-xl) var(--space-xl);
     overflow: hidden;
     -webkit-app-region: no-drag;
 }
@@ -1023,7 +1023,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: var(--space-lg);
+    padding: var(--space-lg) var(--space-lg) 0;
 }
 
 /* Specialized header for glass debug has its own padding/flex */
@@ -1067,7 +1067,7 @@ body {
     display: flex;
     justify-content: flex-end;
     gap: var(--space-sm);
-    margin-top: var(--space-lg);
+    padding: 0 var(--space-lg) var(--space-lg);
 }
 
 /* Format Selection */
